@@ -5,15 +5,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -21,7 +20,7 @@ import androidx.compose.ui.window.application
 
 @Composable
 fun CommandPanel(
-    modifier: Modifier,
+    //modifier: Modifier,
     txt: String
 ) {
     Text(txt)
@@ -30,6 +29,7 @@ fun CommandPanel(
 
 @Composable
 fun FileDisplay(
+    modifier: Modifier,
     files: List<DisplayItem>
 ){
     LazyColumn {
@@ -59,7 +59,27 @@ fun App() {
 //                txt = "Command panel"
 //            )
 //        }
-        FileDisplay(listOf(DisplayItem(Type.FILE, "testFile"), DisplayItem(Type.DIRECTORY, "testDirectory")))
+        Column {
+            Scaffold (
+                topBar =
+                    {
+                        TopAppBar (modifier = Modifier.padding(bottom = 16.dp)){
+                            Text("Top App Bar")
+                        }
+                    }
+            ) {
+                //next: split screen
+                Row (modifier = Modifier.fillMaxWidth()) {
+                    Box (modifier = Modifier.fillMaxWidth(0.5f)){ FileDisplay(Modifier.fillMaxWidth(0.5f), listOf(DisplayItem(Type.FILE, "testFile"), DisplayItem(Type.DIRECTORY, "testDirectory")))}
+//                    Divider(
+//                        color = Color.Black,
+//                        thickness = 1.dp,
+//                        modifier = Modifier.shadow(elevation = 2.dp)
+//                    )
+                    Box(modifier = Modifier.fillMaxWidth(0.5f)){FileDisplay(Modifier.fillMaxWidth(0.5f), listOf(DisplayItem(Type.FILE, "testFile"), DisplayItem(Type.DIRECTORY, "testDirectory")))}
+                }
+            }
+        }
 //        Box {
 //            Column (Modifier.fillMaxHeight()){
 //                Text("From files")
