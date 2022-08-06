@@ -12,11 +12,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import java.io.File
 
 @Composable
 fun CommandPanel(
@@ -29,7 +29,7 @@ fun CommandPanel(
 
 @Composable
 fun FileDisplay(
-    modifier: Modifier,
+    //modifier: Modifier,
     files: List<DisplayItem>
 ){
     LazyColumn {
@@ -50,15 +50,6 @@ fun App() {
 //        }) {
 //            Text(text)
 //        }
-//        Box {
-//            CommandPanel(modifier = Modifier
-//                .fillMaxWidth()
-//                .background(MaterialTheme.colors.surface)
-//                .background(Color.White)
-//                .padding(start = 16.dp, end = 16.dp),
-//                txt = "Command panel"
-//            )
-//        }
         Column {
             Scaffold (
                 topBar =
@@ -68,31 +59,37 @@ fun App() {
                         }
                     }
             ) {
-                //next: split screen
+                //TODO: add padding to split screen
                 Row (modifier = Modifier.fillMaxWidth()) {
-                    Box (modifier = Modifier.fillMaxWidth(0.5f)){ FileDisplay(Modifier.fillMaxWidth(0.5f), listOf(DisplayItem(Type.FILE, "testFile"), DisplayItem(Type.DIRECTORY, "testDirectory")))}
-//                    Divider(
-//                        color = Color.Black,
-//                        thickness = 1.dp,
-//                        modifier = Modifier.shadow(elevation = 2.dp)
-//                    )
-                    Box(modifier = Modifier.fillMaxWidth(0.5f)){FileDisplay(Modifier.fillMaxWidth(0.5f), listOf(DisplayItem(Type.FILE, "testFile"), DisplayItem(Type.DIRECTORY, "testDirectory")))}
+                    Box (modifier = Modifier.fillMaxWidth(0.45f).padding(horizontal = 10.dp)){ FileDisplay(listOf(DisplayItem(Type.FILE, "testFile"), DisplayItem(Type.DIRECTORY, "testDirectory")))}
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(20.dp)
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(10.dp)
+                            .padding(horizontal = 4.dp)
+                            .background(Color.Black)
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(20.dp)
+                    )
+                    Box(modifier = Modifier.fillMaxWidth(0.45f)){FileDisplay(listOf(DisplayItem(Type.FILE, "testFile"), DisplayItem(Type.DIRECTORY, "testDirectory")))}
                 }
             }
         }
-//        Box {
-//            Column (Modifier.fillMaxHeight()){
-//                Text("From files")
-//            }
-//            Column (Modifier.fillMaxHeight()){
-//                Text("To files")
-//            }
-//        }
     }
 }
 
 fun main() = application {
     Window(title = "k-filr",onCloseRequest = ::exitApplication) {
         App()
+        //TODO: add method to enum to get Type from directory or File itself
+        //File("/Users/croonenb/Desktop/tmp").walk().map { DisplayItem(Type.) }
     }
 }
