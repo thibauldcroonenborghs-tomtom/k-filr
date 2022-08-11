@@ -21,15 +21,36 @@ internal class FileUtilsTest {
     fun testCreateDisplayItemListFromCurrentDir(){
         val tmpDir = kotlin.io.path.createTempDirectory(prefix = "tmpDir")
 
-        val nestedTmpDir = kotlin.io.path.createTempDirectory(directory = tmpDir, prefix = "nestedTmpDir")
-        val file1 = kotlin.io.path.createTempFile(directory = tmpDir, prefix = "file1", suffix = ".txt")
-        val file2 = kotlin.io.path.createTempFile(directory = tmpDir, prefix = "file2", suffix = ".txt")
+        kotlin.io.path.createTempDirectory(directory = tmpDir, prefix = "nestedTmpDir")
+        kotlin.io.path.createTempFile(directory = tmpDir, prefix = "file1", suffix = ".txt")
+        kotlin.io.path.createTempFile(directory = tmpDir, prefix = "file2", suffix = ".txt")
 
         val di = currentDirToDisplayItem(tmpDir)
 
         assertEquals(3, di.size)
         assertEquals(2, di.filter{ it.type == FileType.FILE }.size)
         assertEquals(1, di.filter{ it.type == FileType.DIRECTORY }.size)
-        // test that there are 2 files and 1 dir
+    }
+
+    @Test
+    fun testCreateDisplayItemListFromCurrentDirNotEntireNestedDirectory(){
+        val tmpDir = kotlin.io.path.createTempDirectory(prefix = "tmpDir")
+
+        val nestedTmpDir = kotlin.io.path.createTempDirectory(directory = tmpDir, prefix = "nestedTmpDir")
+        kotlin.io.path.createTempFile(directory = tmpDir, prefix = "file1", suffix = ".txt")
+        kotlin.io.path.createTempFile(directory = tmpDir, prefix = "file2", suffix = ".txt")
+        kotlin.io.path.createTempFile(directory = nestedTmpDir, prefix = "file2", suffix = ".txt")
+
+        val di = currentDirToDisplayItem(tmpDir)
+
+        assertEquals(3, di.size)
+    }
+
+    @Test
+    fun testEmptyListIfCurrentDirIsNull(){
+        val tmpDir = kotlin.io.path.createTempDirectory(prefix = "tmpDir")
+
+        val di = currentDirToDisplayItem(tmpDir)
+        assertEquals(0, di.size)
     }
 }

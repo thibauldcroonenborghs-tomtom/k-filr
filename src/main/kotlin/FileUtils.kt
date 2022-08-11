@@ -11,10 +11,13 @@ fun typeFromFile(file: File): FileType? {
         .firstOrNull { it.isDirectory == file.isDirectory }
 }
 
+//TODO: no permissions on Desktop because no files are displayed?
 fun currentDirToDisplayItem(dir: Path): List<DisplayItem> {
-    return dir.toFile()
-        .walk()
-        .filter { it != dir.toFile() }
-        .map { DisplayItem.fromFile(it.absoluteFile) }
-        .toList()
+    val files = dir.toFile().listFiles()
+     if(files?.isNotEmpty() == true){
+         return files.filter { it != dir.toFile() }
+             .map { DisplayItem.fromFile(it.absoluteFile) }
+             .toList()
+     }
+    return emptyList()
 }
