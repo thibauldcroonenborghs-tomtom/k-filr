@@ -1,8 +1,14 @@
-data class DisplayItem (
-    val type: Type,
-    val name: String
-)
+import java.io.File
 
-enum class Type {
-    DIRECTORY, FILE
+data class DisplayItem (
+    val type: FileType,
+    val name: String
+){
+
+    companion object Item {
+        fun fromFile(file: File): DisplayItem {
+            return DisplayItem(typeFromFile(file)!!, file.name)
+        }
+    }
+
 }
